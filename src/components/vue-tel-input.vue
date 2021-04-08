@@ -2,7 +2,7 @@
   <div :class="['vue-tel-input', wrapperClasses, { disabled: disabled }]">
     <slot 
       name="dropdown"
-      bind="{
+      v-bind="{
         activeCountry,
         choose,
         dropdownOptions,
