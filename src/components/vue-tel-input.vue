@@ -1,38 +1,52 @@
 <template>
   <div :class="['vue-tel-input', wrapperClasses, { disabled: disabled }]">
-    <div
-      v-click-outside="clickedOutside"
-      :tabindex="dropdownOptions && dropdownOptions.tabindex ? dropdownOptions.tabindex : 0"
-      :class="['vti__dropdown', { open: open }]"
-      @keydown="keyboardNav"
-      @click="toggleDropdown"
-      @keydown.esc="reset"
+    <slot 
+      name="dropdown"
+      bind="{
+        activeCountry,
+        dropdownOptions,
+        enabledCountryCode,
+        enabledFlags,
+        keyboardNav,
+        reset,
+        sortedCountries,
+        toggleDropdown
+      }"
     >
-      <span class="vti__selection">
-        <div v-if="enabledFlags" :class="['vti__flag', activeCountry.iso2.toLowerCase()]" />
-        <span v-if="enabledCountryCode" class="vti__country-code">
-          +{{ activeCountry.dialCode }}
-        </span>
-        <slot name="arrow-icon" :open="open">
-          <span class="vti__dropdown-arrow">{{ open ? "▲" : "▼" }}</span>
-        </slot>
-      </span>
-      <ul ref="list" class="vti__dropdown-list" v-show="open" :class="dropdownOpenDirection">
-        <li
-          v-for="(pb, index) in sortedCountries"
-          :key="pb.iso2 + (pb.preferred ? '-preferred' : '')"
-          :class="['vti__dropdown-item', getItemClass(index, pb.iso2)]"
-          @click="choose(pb, true)"
-          @mousemove="selectedIndex = index"
-        >
-          <div v-if="enabledFlags" :class="['vti__flag', pb.iso2.toLowerCase()]" />
-          <strong>{{ pb.name }}</strong>
-          <span v-if="dropdownOptions && !dropdownOptions.disabledDialCode">
-            +{{ pb.dialCode }}
+      <div
+        v-click-outside="clickedOutside"
+        :tabindex="dropdownOptions && dropdownOptions.tabindex ? dropdownOptions.tabindex : 0"
+        :class="['vti__dropdown', { open: open }]"
+        @keydown="keyboardNav"
+        @click="toggleDropdown"
+        @keydown.esc="reset"
+      >
+        <span class="vti__selection">
+          <div v-if="enabledFlags" :class="['vti__flag', activeCountry.iso2.toLowerCase()]" />
+          <span v-if="enabledCountryCode" class="vti__country-code">
+            +{{ activeCountry.dialCode }}
           </span>
-        </li>
-      </ul>
-    </div>
+          <slot name="arrow-icon" :open="open">
+            <span class="vti__dropdown-arrow">{{ open ? "▲" : "▼" }}</span>
+          </slot>
+        </span>
+        <ul ref="list" class="vti__dropdown-list" v-show="open" :class="dropdownOpenDirection">
+          <li
+            v-for="(pb, index) in sortedCountries"
+            :key="pb.iso2 + (pb.preferred ? '-preferred' : '')"
+            :class="['vti__dropdown-item', getItemClass(index, pb.iso2)]"
+            @click="choose(pb, true)"
+            @mousemove="selectedIndex = index"
+          >
+            <div v-if="enabledFlags" :class="['vti__flag', pb.iso2.toLowerCase()]" />
+            <strong>{{ pb.name }}</strong>
+            <span v-if="dropdownOptions && !dropdownOptions.disabledDialCode">
+              +{{ pb.dialCode }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </slot>
     <input
       ref="input"
       type="tel"
