@@ -4,6 +4,7 @@
       name="dropdown"
       bind="{
         activeCountry,
+        choose,
         dropdownOptions,
         enabledCountryCode,
         enabledFlags,
