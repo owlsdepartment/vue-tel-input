@@ -1,6 +1,6 @@
 <template>
   <div :class="['vue-tel-input', wrapperClasses, { disabled: disabled }]">
-    <slot 
+    <slot
       name="dropdown"
       v-bind="{
         activeCountry,
@@ -23,7 +23,7 @@
         @keydown.esc="reset"
       >
         <span class="vti__selection">
-          <div v-if="enabledFlags" :class="['vti__flag', activeCountry.iso2.toLowerCase()]" />
+          <span v-if="enabledFlags" :class="['vti__flag', activeCountry.iso2.toLowerCase()]" />
           <span v-if="enabledCountryCode" class="vti__country-code">
             +{{ activeCountry.dialCode }}
           </span>
@@ -39,7 +39,7 @@
             @click="choose(pb, true)"
             @mousemove="selectedIndex = index"
           >
-            <div v-if="enabledFlags" :class="['vti__flag', pb.iso2.toLowerCase()]" />
+            <span v-if="enabledFlags" :class="['vti__flag', pb.iso2.toLowerCase()]" />
             <strong>{{ pb.name }}</strong>
             <span v-if="dropdownOptions && !dropdownOptions.disabledDialCode">
               +{{ pb.dialCode }}
